@@ -53,7 +53,7 @@ const MultiSelect = ({
             isClearable
             isSearchable
             isMulti
-            isOptionDisabled={() => _defaultValues?.length >= 10}
+            // isOptionDisabled={() => _defaultValues?.length >= 10}
             isLoading={isLoading}
             getOptionValue={
               isID
@@ -63,11 +63,11 @@ const MultiSelect = ({
             getOptionLabel={
               isID
                 ? (option: any) =>
-                    option.name ||
-                    option.full_name ||
-                    option.first_name ||
-                    option.username ||
-                    option.title
+                  option.name ||
+                  option.full_name ||
+                  option.first_name ||
+                  option.username ||
+                  option.title
                 : (option: any) => option.label
             }
           />
@@ -84,7 +84,7 @@ const MultiSelect = ({
           isClearable
           isSearchable
           isMulti
-          isOptionDisabled={() => _defaultValues?.length >= 10}
+          // isOptionDisabled={() => _defaultValues?.length >= 10}
           isLoading={isLoading}
           getOptionValue={
             isID
@@ -94,11 +94,11 @@ const MultiSelect = ({
           getOptionLabel={
             isID
               ? (option: any) =>
-                  option.name ||
-                  option.full_name ||
-                  option.first_name ||
-                  option.username ||
-                  option.title
+                option.name ||
+                option.full_name ||
+                option.first_name ||
+                option.username ||
+                option.title
               : (option: any) => option.label
           }
         />

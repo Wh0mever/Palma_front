@@ -1,4 +1,4 @@
-import {Banknote, ClipboardList, Flower2, Package, PackagePlus, ShoppingCart, Warehouse} from 'lucide-react'
+import { Banknote, ClipboardList, Flower2, Package, PackagePlus, ShoppingCart, Warehouse } from 'lucide-react'
 import getUserData from '@/helpers/getUserData.ts'
 
 const getSidebarData = () => {
@@ -62,9 +62,9 @@ const getSidebarData = () => {
       icon: <ClipboardList />,
       title: 'Отчеты',
       subNavItems: [
-        userType === 'ADMIN' && { link: '/dashboard/reports/overall', text: 'Общий отчет' },
-        userType !== 'CASHIER' && userType !== 'SALESMAN' && userType !== 'NO_BONUS_SALESMAN' && userType !== 'FLORIST' && userType !== 'FLORIST_PERCENT' && userType !== 'WAREHOUSE_MASTER' && { link: '/dashboard/reports/orders', text: 'Отчеты по продажам' },
-        userType !== 'CASHIER' && userType !== 'SALESMAN' && userType !== 'NO_BONUS_SALESMAN' && userType !== 'FLORIST' && userType !== 'FLORIST_PERCENT' && userType !== 'WAREHOUSE_MASTER' && { link: '/dashboard/reports/order-items', text: 'Отчеты по товарам' },
+        userType === 'ADMIN' || userType === 'CASHIER' && { link: '/dashboard/reports/overall', text: 'Общий отчет' },
+        userType !== 'SALESMAN' && userType !== 'NO_BONUS_SALESMAN' && userType !== 'FLORIST' && userType !== 'FLORIST_PERCENT' && userType !== 'WAREHOUSE_MASTER' && { link: '/dashboard/reports/orders', text: 'Отчеты по продажам' },
+        userType !== 'SALESMAN' && userType !== 'NO_BONUS_SALESMAN' && userType !== 'FLORIST' && userType !== 'FLORIST_PERCENT' && userType !== 'WAREHOUSE_MASTER' && { link: '/dashboard/reports/order-items', text: 'Отчеты по товарам' },
         userType !== 'CASHIER' && userType === 'ADMIN' && { link: '/dashboard/reports/clients', text: 'Отчеты по клиентам' },
         userType === 'ADMIN' || userType === 'CASHIER' || userType === 'WAREHOUSE_MASTER' ? { link: '/dashboard/reports/all-workers', text: 'Отчеты по сотрудникам' } : '',
         userType !== 'SALESMAN' && userType !== 'NO_BONUS_SALESMAN' && userType !== 'FLORIST' && userType !== 'FLORIST_PERCENT' && userType !== 'MANAGER' && { link: '/dashboard/reports/florists', text: 'Отчеты по флористам' },

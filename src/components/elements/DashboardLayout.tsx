@@ -1,10 +1,10 @@
 import Sidebar from '@/components/widgets/Sidebar.tsx'
-import {IChildren} from '@/typing/interfaces.ts'
+import { IChildren } from '@/typing/interfaces.ts'
 import Header from '@/components/widgets/Header.tsx'
-import {useEffect, useState} from 'react'
-import {useNavigate} from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import getUserData from '@/helpers/getUserData.ts'
-import {Toaster} from "@/components/ui/toaster.tsx"
+import { Toaster } from "@/components/ui/toaster.tsx"
 
 const notPermitted = {
   'ADMIN': [],
@@ -71,7 +71,7 @@ const DashboardLayout = ({ children }: IChildren) => {
   return (
     <>
       <div className='flex h-screen'>
-        { isSidebarOpen && <Sidebar onClick={handleSidebar}/> }
+        {isSidebarOpen && <Sidebar onClick={handleSidebar} />}
 
         <div className='w-full flex flex-col'>
           <Header onClick={handleSidebar} />

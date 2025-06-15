@@ -7,9 +7,9 @@ import PaginationComponent from '@/components/others/PaginationComponent.tsx'
 import usePagination from '@/hooks/usePagination.ts'
 import useNumberFormatter from '@/hooks/useNumberFormatter.ts'
 import useServerSearch from '@/hooks/useServerSearch.ts'
-import {useEffect, useState} from "react"
+import { useEffect, useState } from "react"
 import useQueryString from '@/hooks/useQueryString.ts'
-import {api} from "@/services/api.ts"
+import { api } from "@/services/api.ts"
 
 const PaymentsSection = () => {
   const paymentsFilterState = JSON.parse(localStorage.getItem("payments") || JSON.stringify({
@@ -30,7 +30,7 @@ const PaymentsSection = () => {
 
   const { formatter } = useNumberFormatter()
   const { currentPage, setCurrentPage, totalPages, setTotalPages } = usePagination(paymentsFilterState)
-  const { periodFrom, periodTo, setPeriodFrom, setPeriodTo, periodFromFormatted, periodToFormatted, paymentType, setPaymentType, paymentModelType, setPaymentModelType, paymentMethod, setPaymentMethod, outlay, setOutlay, created, setCreated, worker, setWorker, isDebt, setIsDebt } = useFilters(paymentsFilterState)
+  const { periodFrom, periodTo, setPeriodFrom, setPeriodTo, periodFromFormatted, periodToFormatted, paymentType, setPaymentType, client, setClient, paymentMethod, setPaymentMethod, outlay, setOutlay, created, setCreated, worker, setWorker, isDebt, setIsDebt } = useFilters(paymentsFilterState)
   const { searchValue, handleSearch, submitSearch, submittedSearch } = useServerSearch(setCurrentPage)
 
   const queryParams: any = {
@@ -43,7 +43,7 @@ const PaymentsSection = () => {
     'worker': worker !== null ? worker : '',
     'payment_method': paymentMethod !== null && paymentMethod !== 'null' ? paymentMethod : '',
     'payment_type': paymentType !== null && paymentType !== 'null' ? paymentType : '',
-    'payment_model_type': paymentModelType !== null && paymentModelType !== 'null' ? paymentModelType : '',
+    'client': client !== null && client !== 'null' ? client : '',
     'is_debt': isDebt !== null && isDebt !== 'null' ? isDebt : '',
   }
 
@@ -56,7 +56,7 @@ const PaymentsSection = () => {
       "periodFrom": periodFrom,
       "periodTo": periodTo,
       "paymentType": paymentType,
-      "paymentModelType": paymentModelType,
+      "client": client,
       "paymentMethod": paymentMethod,
       "outlay": outlay,
       "created": created,
@@ -71,7 +71,7 @@ const PaymentsSection = () => {
     periodFrom,
     periodTo,
     paymentType,
-    paymentModelType,
+    client,
     paymentMethod,
     outlay,
     created,
@@ -89,7 +89,7 @@ const PaymentsSection = () => {
 
   return (
     <>
-      { isLoading ? (
+      {isLoading ? (
         <SectionTableSkeleton />
       ) : (
         <section className='w-full flex flex-col gap-8'>
@@ -120,7 +120,7 @@ const PaymentsSection = () => {
               setPeriodTo={setPeriodTo}
               setPaymentType={setPaymentType}
               setPaymentMethod={setPaymentMethod}
-              setPaymentModelType={setPaymentModelType}
+              setClients={setClient}
               setOutlay={setOutlay}
               setCreated={setCreated}
               setWorker={setWorker}
@@ -128,7 +128,7 @@ const PaymentsSection = () => {
               createdApiUrl={`api/users/payment-creators`}
               refetchData={() => setQueryString(queryStringCollection)}
               paymentType={paymentType}
-              paymentModelType={paymentModelType}
+              client={client}
               paymentMethod={paymentMethod}
               outlay={outlay}
               created={created}
@@ -137,18 +137,18 @@ const PaymentsSection = () => {
               pathName={'payments'}
               hasPaymentType
               hasPaymentMethod
-              hasPaymentModelType
+              hasClients
               hasOutlay
               hasCreated
               hasWorker
               hasIsDebt
             />
 
-            { !isFetching ? (
+            {!isFetching ? (
               <PaymentsTable data={data?.results?.payments} />
             ) : (
               <SectionTableSkeleton />
-            ) }
+            )}
 
             <PaginationComponent
               data={!isError && data}
