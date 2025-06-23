@@ -55,16 +55,16 @@ const ClientsSection = () => {
   }, [submittedSearch])
 
   useEffect(() => {
-    localStorage.setItem("clients", JSON.stringify({
-      "discount_percent_min": percentMin,
-      "discount_percent_max": percentMax,
-      "submittedSearch": submittedSearch,
-    }))
-  }, [
-    percentMin,
-    percentMax,
-    submittedSearch,
-  ])
+    const timeoutId = setTimeout(() => {
+      localStorage.setItem("clients", JSON.stringify({
+        "discount_percent_min": percentMin,
+        "discount_percent_max": percentMax,
+        "submittedSearch": submittedSearch,
+      }))
+    }, 500)
+
+    return () => clearTimeout(timeoutId)
+  }, [percentMin, percentMax, submittedSearch])
 
   return (
     <>

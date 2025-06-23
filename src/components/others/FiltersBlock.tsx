@@ -331,8 +331,8 @@ const FiltersBlock = ({
     );
   };
 
-  const handlePercentMinChange = (e: React.ChangeEvent<HTMLInputElement>) => setPercentMin(e.target.value)
-  const handlePercentMaxChange = (e: React.ChangeEvent<HTMLInputElement>) => setPercentMax(e.target.value)
+  const handlePercentMinChange = (e: React.ChangeEvent<HTMLInputElement>) => setPercentMin(e.target.value || "")
+  const handlePercentMaxChange = (e: React.ChangeEvent<HTMLInputElement>) => setPercentMax(e.target.value || "")
 
   const handleMultiSelectChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setClients ? setClients(extractValue(e, "id")) : null;
@@ -433,14 +433,14 @@ const FiltersBlock = ({
             <Input
               placeholder="Процент от"
               className="w-full"
-              value={percentMin}
+              value={percentMin || ""}
               onChange={handlePercentMinChange}
             />
             <span>-</span>
             <Input
               placeholder="Процент до"
               className="w-full"
-              value={percentMax}
+              value={percentMax || ""}
               onChange={handlePercentMaxChange}
             />
           </div>

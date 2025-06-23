@@ -32,8 +32,8 @@ const useFilters = (initFilters: any) => {
   const [isDebt, setIsDebt] = useState<string | null>('isDebt' in initFilters ? initFilters['isDebt'] : null)
   const [workerType, setWorkerType] = useState<string | null>('workerType' in initFilters ? initFilters['workerType'] : null)
   const [orderField, setOrderField] = useState<string | null>('orderField' in initFilters ? initFilters['orderField'] : null)
-  const [percentMin, setPercentMin] = useState<string | null>('percentMin' in initFilters ? initFilters['percentMin'] : null)
-  const [percentMax, setPercentMax] = useState<string | null>('percentMax' in initFilters ? initFilters['percentMax'] : null)
+  const [percentMin, setPercentMin] = useState<string>('discount_percent_min' in initFilters ? initFilters['discount_percent_min'] || "" : "")
+  const [percentMax, setPercentMax] = useState<string>('discount_percent_max' in initFilters ? initFilters['discount_percent_max'] || "" : "")
 
   const periodFromFormatted = periodFrom ? formatDate(periodFrom).split(',')[0] : ''
   const periodToFormatted = periodTo ? formatDate(periodTo).split(',')[0] : ''
