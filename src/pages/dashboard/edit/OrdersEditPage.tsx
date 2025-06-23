@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import DashboardLayout from "@/components/elements/DashboardLayout.tsx"
-import {useNavigate, useParams} from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import SearchItem from "@/components/items/SearchItem.tsx"
-import {Button} from "@/components/ui/button.tsx"
-import {useEffect, useState} from "react"
+import { Button } from "@/components/ui/button.tsx"
+import { useEffect, useState } from "react"
 import ProductCard from "@/components/ui/ProductCard.tsx"
-import {ScrollArea} from "@/components/ui/scroll-area.tsx"
+import { ScrollArea } from "@/components/ui/scroll-area.tsx"
 import useAxiosPost from "@/hooks/useAxiosPost.ts"
 import AddForm from "@/components/others/AddForm.tsx"
-import {z} from "zod"
+import { z } from "zod"
 import useNumberFormatter from "@/hooks/useNumberFormatter.ts"
 import useAxiosPut from "@/hooks/useAxiosPut.ts"
 import EditDialog from "@/components/others/EditDialog.tsx"
@@ -22,8 +22,8 @@ import {
 } from "@/components/ui/dialog.tsx"
 import ErrorItem from "@/components/items/ErrorItem.tsx"
 import PaymentDialog from "@/components/others/PaymentDialog.tsx"
-import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table"
-import {ChevronLeft, Eye, ReceiptText, Trash2} from "lucide-react"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { ChevronLeft, Eye, ReceiptText, Trash2 } from "lucide-react"
 import ReturnDialog from "@/components/others/ReturnDialog"
 import formatDate from "@/helpers/formatDate"
 import NumberFormField from "@/components/others/NumberFormField.tsx"
@@ -40,7 +40,7 @@ import OrderCompleteItem from "@/components/items/OrderCompleteItem.tsx"
 import getUserData from "@/helpers/getUserData.ts"
 import translatedData from "@/data/translatedData.ts"
 import ReactSelectFormField from "@/components/others/ReactSelectFormField.tsx"
-import {api} from "@/services/api.ts"
+import { api } from "@/services/api.ts"
 import DatePicker from "@/components/others/DatePicker.tsx"
 
 interface InputValues {
@@ -51,17 +51,17 @@ interface InputValues {
 }
 
 const OrdersEditPage = () => {
-  const {id} = useParams()
+  const { id } = useParams()
   const navigate = useNavigate()
-  const {keyList: productsKeyList} = useScanner()
-  const {keyList: bouquetsKeyList} = useScanner()
-  const {userType, userId} = getUserData()
-  const {formatter} = useNumberFormatter()
-  const {deleteItem, isDeleting, error, errorText} = useDeleteItem()
+  const { keyList: productsKeyList } = useScanner()
+  const { keyList: bouquetsKeyList } = useScanner()
+  const { userType, userId } = getUserData()
+  const { formatter } = useNumberFormatter()
+  const { deleteItem, isDeleting, error, errorText } = useDeleteItem()
   const initialSelectedCategory = localStorage.getItem("selectedCategory") || ""
   const initialFactorySelectedCategory = localStorage.getItem("selectedFactoryCategory") || ""
-  const {data, isLoading, isFetching} = api.useGetOrdersQuery({ id: id })
-  const {data: paymentMethods, isLoading: paymentMethodsLoading} = api.useGetPaymentMethodsQuery('')
+  const { data, isLoading, isFetching } = api.useGetOrdersQuery({ id: id })
+  const { data: paymentMethods, isLoading: paymentMethodsLoading } = api.useGetPaymentMethodsQuery('')
 
   const [amountError, setAmountError] = useState<boolean>(false)
   const [calculatedValue, setCalculatedValue] = useState<string>("")
@@ -80,7 +80,7 @@ const OrdersEditPage = () => {
     factoryPrice: ""
   })
 
-  const {inputValues: editValues, handleInputChange: editValuesChange} = useValues(
+  const { inputValues: editValues, handleInputChange: editValuesChange } = useValues(
     {
       comment: ""
     },
@@ -91,15 +91,15 @@ const OrdersEditPage = () => {
     data
   )
 
-  const {data: categoriesData, isLoading: categoriesLoading} = api.useGetCategoriesForSaleQuery('')
-  const {data: factoryCategoriesData, isLoading: factoryCategoriesLoading} = api.useGetFactoriesCategoriesQuery('')
-  const {data: productsData, isLoading: productsLoading, isFetching: productsFetching} = api.useGetProductsForSaleQuery('')
-  const {data: factoryProductsData, isLoading: factoryProductsLoading, isFetching: factoryProductsFetching} = api.useGetFactoriesForSaleQuery('')
-  const {data: clientsData, isLoading: clientsLoading} = api.useGetClientsQuery('')
-  const {data: departmentsData, isLoading: departmentsLoading} = api.useGetDepartmentsQuery('')
-  const {data: orderReturnsData} = api.useGetOrderItemsReturnsQuery({ id: id, orderItemID: orderItemID })
-  const {data: factoryReturnsData} = api.useGetFactoryOrderItemsReturnsQuery({ id: id, factoryOrderID: factoryOrderID })
-  const {data: salesmanData, isLoading: salesmanLoading} = api.useGetSalesmanListQuery('')
+  const { data: categoriesData, isLoading: categoriesLoading } = api.useGetCategoriesForSaleQuery('')
+  const { data: factoryCategoriesData, isLoading: factoryCategoriesLoading } = api.useGetFactoriesCategoriesQuery('')
+  const { data: productsData, isLoading: productsLoading, isFetching: productsFetching } = api.useGetProductsForSaleQuery('')
+  const { data: factoryProductsData, isLoading: factoryProductsLoading, isFetching: factoryProductsFetching } = api.useGetFactoriesForSaleQuery('')
+  const { data: clientsData, isLoading: clientsLoading } = api.useGetClientsQuery('')
+  const { data: departmentsData, isLoading: departmentsLoading } = api.useGetDepartmentsQuery('')
+  const { data: orderReturnsData } = api.useGetOrderItemsReturnsQuery({ id: id, orderItemID: orderItemID })
+  const { data: factoryReturnsData } = api.useGetFactoryOrderItemsReturnsQuery({ id: id, factoryOrderID: factoryOrderID })
+  const { data: salesmanData, isLoading: salesmanLoading } = api.useGetSalesmanListQuery('')
 
   const [completeOrderPost, { isLoading: completePending }] = api.usePostDataMutation()
   const [scannerAddProduct, { isLoading: scannerAddProductPending }] = api.usePostDataMutation()
@@ -112,38 +112,38 @@ const OrdersEditPage = () => {
   // const {data: hasShiftData, isLoading: hasShiftIsLoading} = api.useGetShiftStatusQuery("")
   // const [createShift, {isLoading: openPending}] = api.useCreateShiftMutation<any>()
 
-  const {success, form, onSubmit} = useAxiosPost(
+  const { success, form, onSubmit } = useAxiosPost(
     {
-      product: z.string({required_error: "Пожалуйста, выберите продукт"}),
-      count: z.string({required_error: "Пожалуйста, введите количество продукта"}),
+      product: z.string({ required_error: "Пожалуйста, выберите продукт" }),
+      count: z.string({ required_error: "Пожалуйста, введите количество продукта" }),
     },
     {},
     `api/orders/${id}/order-items/`,
     ["Orders"]
   )
 
-  const {success: factorySuccess, form: factoryForm, onSubmit: factorySubmit} = useAxiosPost(
+  const { success: factorySuccess, form: factoryForm, onSubmit: factorySubmit } = useAxiosPost(
     {
-      product_factory: z.string({required_error: "Пожалуйста, выберите продукт"}),
+      product_factory: z.string({ required_error: "Пожалуйста, выберите продукт" }),
     },
     {},
     `api/orders/${id}/factory-product-order_items/`,
     ["Orders"]
   )
 
-  const {success: completeOrderSuccess, form: completeOrderForm, onSubmit: completeOrderSubmit} = useAxiosPost(
+  const { success: completeOrderSuccess, form: completeOrderForm, onSubmit: completeOrderSubmit } = useAxiosPost(
     {
       id: z.string().optional(),
       amount: z.string().optional(),
     },
     {
-      "payments": [{"id": 0, "amount": "0.00"}]
+      "payments": [{ "id": 0, "amount": "0.00" }]
     },
     `api/orders/${id}/complete-order/`,
     ["Orders", "Payments"]
   )
 
-  const {success: orderSuccess, form: orderForm, onSubmit: orderSubmit, pending: orderPending} = useAxiosPut(
+  const { success: orderSuccess, form: orderForm, onSubmit: orderSubmit, pending: orderPending } = useAxiosPut(
     {
       client: z.string().optional(),
       department: z.string().optional(),
@@ -173,9 +173,9 @@ const OrdersEditPage = () => {
   //   }
   // )
 
-  const {success: countSuccess, form: countForm, onSubmit: countSubmit, pending: countPending} = useAxiosPut(
+  const { success: countSuccess, form: countForm, onSubmit: countSubmit, pending: countPending } = useAxiosPut(
     {
-      count: z.string({required_error: "Пожалуйста, введите количество"}),
+      count: z.string({ required_error: "Пожалуйста, введите количество" }),
     },
     {
       "count": inputValues.count.replace(/\s/g, "")
@@ -185,9 +185,9 @@ const OrdersEditPage = () => {
     ["Orders", "Products", "Factories"]
   )
 
-  const {success: priceSuccess, form: priceForm, onSubmit: priceSubmit, pending: pricePending} = useAxiosPut(
+  const { success: priceSuccess, form: priceForm, onSubmit: priceSubmit, pending: pricePending } = useAxiosPut(
     {
-      price: z.string({required_error: "Пожалуйста, введите цену"}),
+      price: z.string({ required_error: "Пожалуйста, введите цену" }),
     },
     {
       "price": inputValues.price.replace(/\s/g, "")
@@ -197,9 +197,9 @@ const OrdersEditPage = () => {
     ["Orders"]
   )
 
-  const {form: factoryPriceForm, success: factoryPriceSuccess, onSubmit: factoryPriceSubmit, pending: factoryPricePending} = useAxiosPut(
+  const { form: factoryPriceForm, success: factoryPriceSuccess, onSubmit: factoryPriceSubmit, pending: factoryPricePending } = useAxiosPut(
     {
-      price: z.string({required_error: "Пожалуйста, введите цену"}),
+      price: z.string({ required_error: "Пожалуйста, введите цену" }),
     },
     {
       "price": inputValues.factoryPrice.replace(/\s/g, "")
@@ -313,10 +313,12 @@ const OrdersEditPage = () => {
 
   const handleScannerAddProduct = async () => {
     try {
-      await scannerAddProduct({ url: `api/orders/${id}/order-items/`, body: {
-        "code": productsKeyList.join(""),
-        "count": 1
-      }, invalidatesTags: ["Orders", "Products"] })
+      await scannerAddProduct({
+        url: `api/orders/${id}/order-items/`, body: {
+          "code": productsKeyList.join(""),
+          "count": 1
+        }, invalidatesTags: ["Orders", "Products"]
+      })
     } catch (e) {
       console.log("Error:", e)
     }
@@ -324,10 +326,12 @@ const OrdersEditPage = () => {
 
   const handleScannerAddBouquet = async () => {
     try {
-      await scannerAddBouquet({ url: `api/orders/${id}/factory-product-order_items/`, body: {
-        "code": bouquetsKeyList.join(""),
-        "count": 1
-      }, invalidatesTags: ["Orders", "Products", "Factories"] })
+      await scannerAddBouquet({
+        url: `api/orders/${id}/factory-product-order_items/`, body: {
+          "code": bouquetsKeyList.join(""),
+          "count": 1
+        }, invalidatesTags: ["Orders", "Products", "Factories"]
+      })
     } catch (e) {
       console.log("Error:", e)
     }
@@ -347,10 +351,12 @@ const OrdersEditPage = () => {
 
   const handleAddProduct = async (selectedProduct: any) => {
     try {
-      await addProduct({ url: `api/orders/${id}/order-items/`, body: {
-        "product": selectedProduct.id,
-        "count": 1
-      }, invalidatesTags: ["Orders", "Products"] })
+      await addProduct({
+        url: `api/orders/${id}/order-items/`, body: {
+          "product": selectedProduct.id,
+          "count": 1
+        }, invalidatesTags: ["Orders", "Products"]
+      })
     } catch (error) {
       console.error("Error updating item quantity:", error)
     }
@@ -358,9 +364,11 @@ const OrdersEditPage = () => {
 
   const handleAddBouquet = async (selectedBouquet: any) => {
     try {
-      await addBouquet({ url: `api/orders/${id}/factory-product-order_items/`, body: {
-        "product_factory": selectedBouquet.id
-      }, invalidatesTags: ["Orders", "Products", "Factories"] })
+      await addBouquet({
+        url: `api/orders/${id}/factory-product-order_items/`, body: {
+          "product_factory": selectedBouquet.id
+        }, invalidatesTags: ["Orders", "Products", "Factories"]
+      })
     } catch (e) {
       console.log("Error adding item:", e)
     }
@@ -395,7 +403,7 @@ const OrdersEditPage = () => {
                 <div className="flex flex-col gap-6">
                   <div className="flex flex-col gap-4">
                     <Button variant="outline" className="w-44" onClick={() => navigate(-1)}>
-                      <ChevronLeft className="mr-2 w-4 h-4"/> Вернуться назад
+                      <ChevronLeft className="mr-2 w-4 h-4" /> Вернуться назад
                     </Button>
 
                     <SearchItem
@@ -443,11 +451,11 @@ const OrdersEditPage = () => {
                           </div>
                         </>
                       ) : (
-                        <CategoriesSkeleton/>
+                        <CategoriesSkeleton />
                       )}
                     </div>
 
-                    {dataStatusError && <ErrorItem title="Ошибка" desc="Вы не можете добавить товар если заказ завершен"/>}
+                    {dataStatusError && <ErrorItem title="Ошибка" desc="Вы не можете добавить товар если заказ завершен" />}
                   </div>
 
                   <AddForm form={form} onSubmit={onSubmit} success={success} successDesc="Товар успешно добавлен">
@@ -472,7 +480,7 @@ const OrdersEditPage = () => {
                               ) : null}
                             </>
                           )) : (
-                            <ProductsSkeleton/>
+                            <ProductsSkeleton />
                           )}
                           {!factoryProductsLoading && filteredFactoryProducts && Array.isArray(filteredFactoryProducts) ? filteredFactoryProducts.map(item => (
                             <>
@@ -492,7 +500,7 @@ const OrdersEditPage = () => {
                               ) : null}
                             </>
                           )) : (
-                            <ProductsSkeleton/>
+                            <ProductsSkeleton />
                           )}
                         </div>
 
@@ -579,12 +587,23 @@ const OrdersEditPage = () => {
                         <div className="flex flex-col">
                           <p className="font-semibold">Клиент: <span
                             className="font-bold">{data.client?.full_name}</span></p>
+
                           <p className="font-semibold">Продавец: <span
                             className="font-bold">{data.salesman?.first_name || data.salesman?.username || "-"}</span></p>
+
                           <p className="font-semibold">Создал: <span
                             className="font-bold">{data.created_user?.first_name || data.created_user?.username}</span></p>
+
                           <p className="font-semibold">Дата создания: <span
                             className="font-bold">{formatDate(data.created_at)}</span>
+                          </p>
+
+                          <p className="font-semibold">Сумма продаж за этот год: <span
+                            className="font-bold">{formatter.format(data.client?.total_orders_sum)} сум</span>
+                          </p>
+
+                          <p className="font-semibold">Количество продаж за весь период: <span
+                            className="font-bold">{formatter.format(data.client?.total_orders_sum)} шт</span>
                           </p>
                         </div>
 
@@ -603,6 +622,10 @@ const OrdersEditPage = () => {
 
                           <p className="font-semibold">Процент скидки: <span
                             className="font-bold">{formatter.format(data.client?.discount_percent)}%</span>
+                          </p>
+
+                          <p className="font-semibold">Количество продаж за этот год: <span
+                            className="font-bold">{formatter.format(data.client?.total_orders_sum)} шт</span>
                           </p>
                         </div>
                       </div>
@@ -624,14 +647,14 @@ const OrdersEditPage = () => {
                             _value={editValues.comment}
                             _onChange={(e: any) => editValuesChange("comment", e.target.value)}
                           />
-                          { userType === 'ADMIN' && (
+                          {userType === 'ADMIN' && (
                             <DatePicker
                               isForm
                               name="created_at"
                               text='Дата cоздания'
                               control={orderForm.control}
                             />
-                          ) }
+                          )}
 
                           <Button type="submit" disabled={orderPending}>Изменить</Button>
                         </div>
@@ -729,7 +752,7 @@ const OrdersEditPage = () => {
                                           ["Orders", "Products"]
                                         )
                                       } title="Удалить">
-                                        <Trash2 className="w-4 h-4"/>
+                                        <Trash2 className="w-4 h-4" />
                                       </Button>
                                     </TableCell>
                                   ) : null}
@@ -739,7 +762,7 @@ const OrdersEditPage = () => {
                                       <ReturnDialog
                                         dialogTitle="Сделать возврат"
                                         dialogDesc="Заполните нужные поля, чтобы сделать возврат"
-                                        schemaObject={{count: z.string({required_error: "Введите количество товара"})}}
+                                        schemaObject={{ count: z.string({ required_error: "Введите количество товара" }) }}
                                         url={`api/orders/${id}/order-items/${item.id}/returns/`}
                                         invalidatesTags={["OrderReturns"]}
                                       />
@@ -749,7 +772,7 @@ const OrdersEditPage = () => {
                                       <Dialog>
                                         <DialogTrigger asChild>
                                           <Button size="icon" onClick={() => setOrderItemID(item.id)}>
-                                            <Eye className="w-4 h-4"/>
+                                            <Eye className="w-4 h-4" />
                                           </Button>
                                         </DialogTrigger>
 
@@ -759,7 +782,7 @@ const OrdersEditPage = () => {
                                           </DialogHeader>
 
                                           {error && (
-                                            <ErrorItem title="Ошибка" desc={errorText}/>
+                                            <ErrorItem title="Ошибка" desc={errorText} />
                                           )}
 
                                           <Table className="w-full">
@@ -784,12 +807,12 @@ const OrdersEditPage = () => {
                                                   {data.status === "COMPLETED" && (
                                                     <TableCell>
                                                       <Button variant="destructive" size="icon" disabled={isDeleting}
-                                                              onClick={() => deleteItem(
-                                                                `api/orders/${id}/order-items/${orderItemID}/returns`,
-                                                                item.id,
-                                                                ["Orders", "Products"]
-                                                              )}>
-                                                        <Trash2 className="w-4 h-4"/>
+                                                        onClick={() => deleteItem(
+                                                          `api/orders/${id}/order-items/${orderItemID}/returns`,
+                                                          item.id,
+                                                          ["Orders", "Products"]
+                                                        )}>
+                                                        <Trash2 className="w-4 h-4" />
                                                       </Button>
                                                     </TableCell>
                                                   )}
@@ -815,7 +838,7 @@ const OrdersEditPage = () => {
                         ) : null}
                       </>
                     ) : (
-                      <SectionTableSkeleton/>
+                      <SectionTableSkeleton />
                     )}
 
                     {!isFetching && !isLoading && !addBouquetPending && !scannerAddBouquetPending ? (
@@ -865,12 +888,12 @@ const OrdersEditPage = () => {
                                   {data.status === "CREATED" ? (
                                     <TableCell>
                                       <Button variant="destructive" size="icon" disabled={isDeleting}
-                                              onClick={() => deleteItem(
-                                                `api/orders/${id}/factory-product-order_items`,
-                                                item.id,
-                                                ["Orders", "Factories", "Products"]
-                                              )}>
-                                        <Trash2 className="w-4 h-4"/>
+                                        onClick={() => deleteItem(
+                                          `api/orders/${id}/factory-product-order_items`,
+                                          item.id,
+                                          ["Orders", "Factories", "Products"]
+                                        )}>
+                                        <Trash2 className="w-4 h-4" />
                                       </Button>
                                     </TableCell>
                                   ) : null}
@@ -892,7 +915,7 @@ const OrdersEditPage = () => {
                                       <Dialog>
                                         <DialogTrigger asChild>
                                           <Button size="icon" onClick={() => setFactoryOrderID(item.id)}>
-                                            <Eye className="w-4 h-4"/>
+                                            <Eye className="w-4 h-4" />
                                           </Button>
                                         </DialogTrigger>
 
@@ -902,7 +925,7 @@ const OrdersEditPage = () => {
                                           </DialogHeader>
 
                                           {error && (
-                                            <ErrorItem title="Ошибка" desc={errorText}/>
+                                            <ErrorItem title="Ошибка" desc={errorText} />
                                           )}
 
                                           <Table className="w-full">
@@ -925,12 +948,12 @@ const OrdersEditPage = () => {
                                                   {data.status === "COMPLETED" && (
                                                     <TableCell>
                                                       <Button variant="destructive" size="icon" disabled={isDeleting}
-                                                              onClick={() => deleteItem(
-                                                                `api/orders/${id}/factory-product-order_items/${factoryOrderID}/returns`,
-                                                                undefined,
-                                                                ["Orders", "Factories", "Products"]
-                                                              )}>
-                                                        <Trash2 className="w-4 h-4"/>
+                                                        onClick={() => deleteItem(
+                                                          `api/orders/${id}/factory-product-order_items/${factoryOrderID}/returns`,
+                                                          undefined,
+                                                          ["Orders", "Factories", "Products"]
+                                                        )}>
+                                                        <Trash2 className="w-4 h-4" />
                                                       </Button>
                                                     </TableCell>
                                                   )}
@@ -956,14 +979,14 @@ const OrdersEditPage = () => {
                         ) : null}
                       </>
                     ) : (
-                      <SectionTableSkeleton/>
+                      <SectionTableSkeleton />
                     )}
                   </ScrollArea>
                 </div>
 
-                { restoreError && (
+                {restoreError && (
                   <ErrorItem title='Ошибка' desc={JSON.stringify(restoreError.data)} />
-                ) }
+                )}
 
                 <div className="w-full mt-4 pb-2 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-transparent">
                   <div className="flex flex-col sm:flex-row sm:gap-8">
@@ -1011,7 +1034,7 @@ const OrdersEditPage = () => {
                         <Dialog>
                           <DialogTrigger>
                             <Button size="icon" variant="outline">
-                              <ReceiptText className="w-4 h-4"/>
+                              <ReceiptText className="w-4 h-4" />
                             </Button>
                           </DialogTrigger>
 
@@ -1081,11 +1104,11 @@ const OrdersEditPage = () => {
                               <h3 className="text-xl font-bold">Сумма: {formatter.format(Number(data.total_with_discount))} сум</h3>
 
                               {amountError && (
-                                <ErrorItem title="Ошибка" desc="Вы не можете ввести число больше чем сумма"/>
+                                <ErrorItem title="Ошибка" desc="Вы не можете ввести число больше чем сумма" />
                               )}
 
                               <div className="w-full max-h-[400px] p-2 flex flex-col gap-4 overflow-y-auto">
-                                {paymentMethods && Array.isArray(paymentMethods) && paymentMethods.filter((item:any) => item?.is_active ? item : null).map((item, index) => (
+                                {paymentMethods && Array.isArray(paymentMethods) && paymentMethods.filter((item: any) => item?.is_active ? item : null).map((item, index) => (
                                   <OrderCompleteItem
                                     key={index}
                                     form={completeOrderForm}
@@ -1104,7 +1127,7 @@ const OrdersEditPage = () => {
                             </AddForm>
                           </DialogContent>
                         </Dialog>
-                      ) : null }
+                      ) : null}
 
                       {/*{!completeOrderSuccess && data.status === "CREATED" && isCompleteDisabled ? (*/}
                       {/*  <Dialog>*/}
@@ -1162,7 +1185,7 @@ const OrdersEditPage = () => {
                       {data.status === "COMPLETED" ? (
                         <a href={`${getUrl()}/core/print-receipt/order/${id}/`} target="_blank">
                           <Button>
-                            <ReceiptText className="w-4 h-4 mr-2"/> Распечатать чек
+                            <ReceiptText className="w-4 h-4 mr-2" /> Распечатать чек
                           </Button>
                         </a>
                       ) : null}
@@ -1237,7 +1260,7 @@ const OrdersEditPage = () => {
             </div>
           </>
         ) : (
-          <EditSectionSkeleton/>
+          <EditSectionSkeleton />
         )}
       </DashboardLayout>
     </>

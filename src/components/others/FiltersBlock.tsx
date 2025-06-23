@@ -10,6 +10,7 @@ import React from "react";
 import { api } from "@/services/api.ts";
 import clsx from "clsx";
 import { useLocation } from "react-router-dom";
+import { Input } from "../ui/input";
 
 interface FiltersBlockProps {
   periodFrom?: any;
@@ -56,6 +57,8 @@ interface FiltersBlockProps {
   incomeReason?: any;
   workerType?: any;
   orderField?: any;
+  percentMin?: any;
+  percentMax?: any;
 
   setIndustry?: (e: any) => void;
   setProductsCategory?: (e: any) => void;
@@ -81,6 +84,8 @@ interface FiltersBlockProps {
   setIsDebt?: (e: any) => void;
   setWorkerType?: (e: any) => void;
   setOrderField?: (e: any) => void;
+  setPercentMin?: any;
+  setPercentMax?: any;
 
   hasProductsCategory?: boolean;
   hasFactoriesCategory?: boolean;
@@ -108,6 +113,7 @@ interface FiltersBlockProps {
   hasIsDebt?: boolean;
   hasWorkerType?: boolean;
   hasOrderField?: boolean;
+  hasPercent?: boolean;
 
   industryNotMulti?: boolean;
   statusNotMulti?: boolean;
@@ -227,6 +233,11 @@ const FiltersBlock = ({
   hasOrderField,
   orderField,
   setOrderField,
+  hasPercent,
+  percentMin,
+  setPercentMin,
+  percentMax,
+  setPercentMax,
 }: FiltersBlockProps) => {
   const debtData = [
     { label: "Да", value: "true" },
@@ -320,6 +331,9 @@ const FiltersBlock = ({
     );
   };
 
+  const handlePercentMinChange = (e: React.ChangeEvent<HTMLInputElement>) => setPercentMin(e.target.value)
+  const handlePercentMaxChange = (e: React.ChangeEvent<HTMLInputElement>) => setPercentMax(e.target.value)
+
   const handleMultiSelectChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setClients ? setClients(extractValue(e, "id")) : null;
   };
@@ -388,8 +402,8 @@ const FiltersBlock = ({
                 <SelectItem value="null">Не выбрано</SelectItem>
 
                 {!industriesLoading &&
-                industriesData &&
-                Array.isArray(industriesData) ? (
+                  industriesData &&
+                  Array.isArray(industriesData) ? (
                   industriesData.map((item) => (
                     <SelectItem key={item.id} value={item.id.toString()}>
                       {item.name}
@@ -412,6 +426,24 @@ const FiltersBlock = ({
               />
             )}
           </>
+        )}
+
+        {hasPercent && (
+          <div className="w-full flex items-center gap-2">
+            <Input
+              placeholder="Процент от"
+              className="w-full"
+              value={percentMin}
+              onChange={handlePercentMinChange}
+            />
+            <span>-</span>
+            <Input
+              placeholder="Процент до"
+              className="w-full"
+              value={percentMax}
+              onChange={handlePercentMaxChange}
+            />
+          </div>
         )}
 
         {hasProvider && (
@@ -439,8 +471,8 @@ const FiltersBlock = ({
                 <SelectItem value="null">Не выбрано</SelectItem>
 
                 {!productsCategoriesLoading &&
-                productsCategoriesData &&
-                Array.isArray(productsCategoriesData) ? (
+                  productsCategoriesData &&
+                  Array.isArray(productsCategoriesData) ? (
                   productsCategoriesData.map((item) => (
                     <SelectItem key={item.id} value={item.id.toString()}>
                       {item.name}
@@ -479,8 +511,8 @@ const FiltersBlock = ({
                 <SelectItem value="null">Не выбрано</SelectItem>
 
                 {!factoriesCategoriesLoading &&
-                factoriesCategoriesData &&
-                Array.isArray(factoriesCategoriesData) ? (
+                  factoriesCategoriesData &&
+                  Array.isArray(factoriesCategoriesData) ? (
                   factoriesCategoriesData.map((item) => (
                     <SelectItem key={item.id} value={item.id.toString()}>
                       {item.name}
@@ -517,8 +549,8 @@ const FiltersBlock = ({
                 <SelectItem value="null">Не выбрано</SelectItem>
 
                 {!statusesLoading &&
-                statusesData &&
-                Array.isArray(statusesData) ? (
+                  statusesData &&
+                  Array.isArray(statusesData) ? (
                   statusesData.map((item, index) => (
                     <SelectItem key={index} value={item.value}>
                       {item.label}
@@ -552,8 +584,8 @@ const FiltersBlock = ({
                 <SelectItem value="null">Не выбрано</SelectItem>
 
                 {!clientsLoading &&
-                clientsData &&
-                Array.isArray(clientsData) ? (
+                  clientsData &&
+                  Array.isArray(clientsData) ? (
                   clientsData.map((item) => (
                     <SelectItem key={item.id} value={item.id.toString()}>
                       {item.full_name}
@@ -602,8 +634,8 @@ const FiltersBlock = ({
                 <SelectItem value="null">Не выбрано</SelectItem>
 
                 {!paymentMethodsLoading &&
-                paymentMethodsData &&
-                Array.isArray(paymentMethodsData) ? (
+                  paymentMethodsData &&
+                  Array.isArray(paymentMethodsData) ? (
                   paymentMethodsData.map((item) => (
                     <SelectItem key={item.id} value={item.id.toString()}>
                       {item.name}
@@ -642,8 +674,8 @@ const FiltersBlock = ({
                 <SelectItem value="null">Не выбрано</SelectItem>
 
                 {!createOptionsLoading &&
-                createOptionsData.payment_types &&
-                Array.isArray(createOptionsData.payment_types) ? (
+                  createOptionsData.payment_types &&
+                  Array.isArray(createOptionsData.payment_types) ? (
                   createOptionsData.payment_types.map(
                     (item: any, index: any) => (
                       <SelectItem key={index} value={item.value}>
@@ -683,8 +715,8 @@ const FiltersBlock = ({
                 <SelectItem value="null">Не выбрано</SelectItem>
 
                 {!filterOptionsLoading &&
-                filterOptionsData.payment_model_types &&
-                Array.isArray(filterOptionsData.payment_model_types) ? (
+                  filterOptionsData.payment_model_types &&
+                  Array.isArray(filterOptionsData.payment_model_types) ? (
                   filterOptionsData.payment_model_types.map(
                     (item: any, index: any) => (
                       <SelectItem key={index} value={item.value}>
@@ -724,8 +756,8 @@ const FiltersBlock = ({
                 <SelectItem value="null">Не выбрано</SelectItem>
 
                 {!outlayTypesLoading &&
-                outlayTypesData &&
-                Array.isArray(outlayTypesData) ? (
+                  outlayTypesData &&
+                  Array.isArray(outlayTypesData) ? (
                   outlayTypesData.map((item, index) => (
                     <SelectItem key={index} value={item.value}>
                       {item.label}
@@ -771,8 +803,8 @@ const FiltersBlock = ({
                 <SelectItem value="null">Не выбрано</SelectItem>
 
                 {!floristLoading &&
-                floristData &&
-                Array.isArray(floristData) ? (
+                  floristData &&
+                  Array.isArray(floristData) ? (
                   floristData.map((item) => (
                     <SelectItem key={item.id} value={item.id.toString()}>
                       {item.first_name || item.username}
@@ -925,8 +957,8 @@ const FiltersBlock = ({
             <SelectItem value="null">Не выбрано</SelectItem>
 
             {!indicatorLoading &&
-            indicatorData &&
-            Array.isArray(indicatorData) ? (
+              indicatorData &&
+              Array.isArray(indicatorData) ? (
               indicatorData.map((item, index) => (
                 <SelectItem key={index} value={item.value}>
                   {item.label}

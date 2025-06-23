@@ -1,10 +1,10 @@
-import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react"
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 import getUrl from "@/config.js"
 import getAuthorizationHeader from "@/helpers/getAuthHeader.ts"
 
 export const api = createApi({
   reducerPath: "clientApi",
-  baseQuery: fetchBaseQuery({baseUrl: getUrl()}),
+  baseQuery: fetchBaseQuery({ baseUrl: getUrl() }),
   tagTypes: [
     "Shift",
     "Industries",
@@ -212,6 +212,18 @@ export const api = createApi({
     getClients: builder.query({
       query: ({ id, queryString }) => ({
         url: id ? `api/clients/${id}/?${queryString}` : `api/clients/?${queryString}`,
+        method: "GET",
+        headers: {
+          Authorization: getAuthorizationHeader(),
+        },
+      }),
+      keepUnusedDataFor: 60,
+      providesTags: ["Clients"]
+    }),
+
+    getClientsSummary: builder.query({
+      query: () => ({
+        url: `api/clients/summary`,
         method: "GET",
         headers: {
           Authorization: getAuthorizationHeader(),
@@ -469,7 +481,7 @@ export const api = createApi({
     }),
 
     getOrders: builder.query({
-      query: ({id, queryString}) => ({
+      query: ({ id, queryString }) => ({
         url: id ? `api/orders/${id}/` : `api/orders/?${queryString}`,
         method: "GET",
         headers: {
@@ -882,7 +894,7 @@ export const api = createApi({
 
     // POST Requests
     createShift: builder.mutation({
-      query: ({...data}) => ({
+      query: ({ ...data }) => ({
         url: "api/cashiers/shifts/create/",
         method: "POST",
         body: data,
@@ -894,7 +906,7 @@ export const api = createApi({
     }),
 
     closeShift: builder.mutation({
-      query: ({...data}) => ({
+      query: ({ ...data }) => ({
         url: "api/cashiers/shifts/close/",
         method: "POST",
         body: data,
@@ -946,7 +958,7 @@ export const api = createApi({
 
     // DELETE Requests
     deleteData: builder.mutation({
-      query: ({url}) => ({
+      query: ({ url }) => ({
         url: url,
         method: "DELETE",
         headers: {
