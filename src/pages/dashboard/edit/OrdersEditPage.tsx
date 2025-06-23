@@ -599,11 +599,11 @@ const OrdersEditPage = () => {
                           </p>
 
                           <p className="font-semibold">Сумма продаж за этот год: <span
-                            className="font-bold">{formatter.format(data.client?.total_orders_sum)} сум</span>
+                            className="font-bold">{formatter.format(data.client?.total_orders_sum_in_year)} сум</span>
                           </p>
 
                           <p className="font-semibold">Количество продаж за весь период: <span
-                            className="font-bold">{formatter.format(data.client?.total_orders_sum)} шт</span>
+                            className="font-bold">{formatter.format(data.client?.orders_count)} шт</span>
                           </p>
                         </div>
 
@@ -625,7 +625,7 @@ const OrdersEditPage = () => {
                           </p>
 
                           <p className="font-semibold">Количество продаж за этот год: <span
-                            className="font-bold">{formatter.format(data.client?.total_orders_sum)} шт</span>
+                            className="font-bold">{formatter.format(data.client?.orders_count_in_year)} шт</span>
                           </p>
                         </div>
                       </div>

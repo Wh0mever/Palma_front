@@ -18,8 +18,9 @@ import useNumberFormatter from '@/hooks/useNumberFormatter'
 
 const ClientsSection = () => {
   const clientsFilterState = JSON.parse(localStorage.getItem("clients") || JSON.stringify({
-    "percentMin": "",
-    "percentMax": "",
+    "submittedSearch": "",
+    "discount_percent_min": "",
+    "discount_percent_max": "",
   }))
 
   const { formatter } = useNumberFormatter()
@@ -54,7 +55,7 @@ const ClientsSection = () => {
   }, [submittedSearch])
 
   useEffect(() => {
-    localStorage.setItem("orders", JSON.stringify({
+    localStorage.setItem("clients", JSON.stringify({
       "discount_percent_min": percentMin,
       "discount_percent_max": percentMax,
       "submittedSearch": submittedSearch,
