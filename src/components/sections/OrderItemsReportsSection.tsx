@@ -7,13 +7,13 @@ import FiltersBlock from '@/components/others/FiltersBlock.tsx'
 import PaginationComponent from '@/components/others/PaginationComponent.tsx'
 import OrderItemsReportsTable from '@/components/tables/elements/OrderItemsReportsTable.tsx'
 import useServerSearch from '@/hooks/useServerSearch.ts'
-import {useEffect, useState} from "react"
+import { useEffect, useState } from "react"
 import TableDownload from '@/components/others/TableDownload.tsx'
 import useQueryString from '@/hooks/useQueryString.ts'
-import {Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog.tsx"
-import {Button} from "@/components/ui/button.tsx"
-import {Eye} from "lucide-react"
-import {api} from "@/services/api.ts"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog.tsx"
+import { Button } from "@/components/ui/button.tsx"
+import { Eye } from "lucide-react"
+import { api } from "@/services/api.ts"
 
 const OrderItemsReportsSection = () => {
   const orderItemsReportsFilterState = JSON.parse(localStorage.getItem("orderItemsReports") || JSON.stringify({
@@ -26,13 +26,14 @@ const OrderItemsReportsSection = () => {
     "periodFromTime": "",
     "periodToTime": "",
     "industry": "",
+    "product": "",
     "client": "",
     "salesman": "",
     "createdUser": ""
   }))
 
   const { formatter } = useNumberFormatter()
-  const { fromTime, toTime, setToTime, setFromTime, periodFromTime, setPeriodFromTime, periodToTime, setPeriodToTime, periodFromTimeFormatted, periodToTimeFormatted, industry, setIndustry, client, setClient, salesman, setSalesman, createdUser, setCreatedUser } = useFilters(orderItemsReportsFilterState)
+  const { fromTime, toTime, setToTime, setFromTime, periodFromTime, setPeriodFromTime, periodToTime, setPeriodToTime, periodFromTimeFormatted, periodToTimeFormatted, industry, setIndustry, client, setClient, salesman, setSalesman, createdUser, setCreatedUser, products, setProducts } = useFilters(orderItemsReportsFilterState)
   const { currentPage: productsCurrentPage, setCurrentPage: productsSetCurrentPage, totalPages: productsTotalPages, setTotalPages: productsSetTotalPages } = usePagination(orderItemsReportsFilterState)
   const { currentPage: bouquetsCurrentPage, setCurrentPage: bouquetsSetCurrentPage, totalPages: bouquetsTotalPages, setTotalPages: bouquetsSetTotalPages } = usePagination(orderItemsReportsFilterState)
   const { searchValue: productsSearchValue, handleSearch: productsHandleSearch, submittedSearch: productsSubmittedSearch, submitSearch: productsSubmitSearch } = useServerSearch(productsSetCurrentPage)
@@ -56,6 +57,7 @@ const OrderItemsReportsSection = () => {
     'client': client !== null && client !== 'null' ? client : '',
     'salesman': salesman !== null && salesman !== 'null' ? salesman : '',
     'created_user': createdUser !== null && createdUser !== 'null' ? createdUser : '',
+    'product': products !== null && products !== 'null' ? products : '',
   }
 
   const bouquetsQueryParams: any = {
@@ -80,6 +82,7 @@ const OrderItemsReportsSection = () => {
       "periodFromTime": periodFromTime,
       "periodToTime": periodToTime,
       "industry": industry,
+      "products": products,
       "client": client,
       "salesman": salesman,
       "createdUser": createdUser
@@ -94,6 +97,7 @@ const OrderItemsReportsSection = () => {
     periodFromTime,
     periodToTime,
     industry,
+    products,
     client,
     salesman,
     createdUser
@@ -121,7 +125,7 @@ const OrderItemsReportsSection = () => {
 
   return (
     <>
-      { isLoading && productsLoading && bouquetsLoading ? (
+      {isLoading && productsLoading && bouquetsLoading ? (
         <SectionTableSkeleton />
       ) : (
         <section className='w-full flex flex-col gap-8'>
@@ -136,7 +140,7 @@ const OrderItemsReportsSection = () => {
               <Dialog>
                 <DialogTrigger>
                   <Button variant="outline">
-                    <Eye className="w-4 h-4 mr-2"/> Дополнительная информация
+                    <Eye className="w-4 h-4 mr-2" /> Дополнительная информация
                   </Button>
                 </DialogTrigger>
 
@@ -178,12 +182,15 @@ const OrderItemsReportsSection = () => {
             }}
             setIndustry={setIndustry}
             setClients={setClient}
+            setProduct={setProducts}
             industry={industry}
+            product={products}
             client={client}
             salesmanValue={salesman}
             createdUserValue={createdUser}
             pathName={'orderItemsReports'}
             hasIndustry
+            hasProduct
             hasClients
             hasSalesman
             haventPeriods
@@ -201,11 +208,11 @@ const OrderItemsReportsSection = () => {
             />
 
             <div className='flex flex-col gap-3'>
-              { !productsFetching ? (
+              {!productsFetching ? (
                 <OrderItemsReportsTable data={productsData?.results} />
               ) : (
                 <SectionTableSkeleton />
-              ) }
+              )}
 
               <PaginationComponent
                 data={!productsError && productsData}
@@ -228,11 +235,11 @@ const OrderItemsReportsSection = () => {
             />
 
             <div className='flex flex-col gap-3'>
-              { !bouquetsFetching ? (
+              {!bouquetsFetching ? (
                 <OrderItemsReportsTable data={bouquetsData?.results} hasntEye isBouquet />
               ) : (
                 <SectionTableSkeleton />
-              ) }
+              )}
 
               <PaginationComponent
                 data={!bouquetsError && bouquetsData}

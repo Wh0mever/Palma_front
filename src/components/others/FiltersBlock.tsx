@@ -33,6 +33,7 @@ interface FiltersBlockProps {
   indicatorApiUrl?: string;
   createdApiUrl?: string;
 
+  product?: any;
   status?: any;
   provider?: any;
   industry?: any;
@@ -60,6 +61,7 @@ interface FiltersBlockProps {
   percentMin?: any;
   percentMax?: any;
 
+  setProduct?: (e: any) => void;
   setIndustry?: (e: any) => void;
   setProductsCategory?: (e: any) => void;
   setFactoriesCategory?: (e: any) => void;
@@ -87,6 +89,7 @@ interface FiltersBlockProps {
   setPercentMin?: any;
   setPercentMax?: any;
 
+  hasProduct?: boolean;
   hasProductsCategory?: boolean;
   hasFactoriesCategory?: boolean;
   hasIndustry?: boolean;
@@ -143,11 +146,14 @@ const FiltersBlock = ({
   periodTo,
   setPeriodFrom,
   setPeriodTo,
+  product,
+  setProduct,
   setIndustry,
   setProductsCategory,
   setFactoriesCategory,
   setStatus,
   refetchData,
+  hasProduct,
   hasProductsCategory,
   hasFactoriesCategory,
   hasIndustry,
@@ -250,50 +256,28 @@ const FiltersBlock = ({
     { label: "Сумма долга", value: "debt" },
   ];
 
-  const { data: industriesData, isLoading: industriesLoading } =
-    api.useGetIndustriesQuery("");
-  const { data: providersData, isLoading: providersLoading } =
-    api.useGetProvidersQuery("");
-  const { data: productsCategoriesData, isLoading: productsCategoriesLoading } =
-    api.useGetCategoriesQuery("");
-  const {
-    data: factoriesCategoriesData,
-    isLoading: factoriesCategoriesLoading,
-  } = api.useGetFactoriesCategoriesQuery("");
-  const { data: clientsData, isLoading: clientsLoading } =
-    api.useGetClientsQuery("");
-  const { data: paymentMethodsData, isLoading: paymentMethodsLoading } =
-    api.useGetPaymentMethodsQuery("");
-  const { data: createOptionsData, isLoading: createOptionsLoading } =
-    api.useGetPaymentCreateOptionsQuery("");
-  const { data: filterOptionsData, isLoading: filterOptionsLoading } =
-    api.useGetPaymentFilterOptionsQuery("");
-  const { data: outlayTypesData, isLoading: outlayTypesLoading } =
-    api.useGetOutlaysTypesQuery("");
-  const { data: floristData, isLoading: floristLoading } =
-    api.useGetFloristsQuery("");
-  const { data: createdUserData, isLoading: createdUserLoading } =
-    api.useGetHaveOrdersUsersQuery("");
-  const { data: salesTypesData, isLoading: salesTypesLoading } =
-    api.useGetFactoriesSalesTypesQuery("");
-  const { data: outlayData, isLoading: outlayLoading } =
-    api.useGetOutlaysQuery("");
-  const { data: salesmanData, isLoading: salesmanLoading } =
-    api.useGetSalesmanQuery("");
-  const { data: workersData, isLoading: workersLoading } =
-    api.useGetWorkersQuery("");
-  const { data: incomeTypesData, isLoading: incomeTypesLoading } =
-    api.useGetWorkerIncomeTypesQuery("");
-  const { data: incomeReasons, isLoading: incomeReasonsLoading } =
-    api.useGetIncomeReasonsQuery("");
-  const { data: workerTypes, isLoading: workerTypesLoading } =
-    api.useGetAllWorkersReportTypeOptionsQuery("");
-  const { data: indicatorData, isLoading: indicatorLoading } =
-    api.useGetIndicatorQuery(indicatorApiUrl);
-  const { data: statusesData, isLoading: statusesLoading } =
-    api.useGetStatusesQuery(statusApiUrl);
-  const { data: createdData, isLoading: createdLoading } =
-    api.useGetCreatedQuery(createdApiUrl);
+  const { data: industriesData, isLoading: industriesLoading } = api.useGetIndustriesQuery("");
+  const { data: productsData, isLoading: productsLoading } = api.useGetProductsQuery("");
+  const { data: providersData, isLoading: providersLoading } = api.useGetProvidersQuery("");
+  const { data: productsCategoriesData, isLoading: productsCategoriesLoading } = api.useGetCategoriesQuery("");
+  const { data: factoriesCategoriesData, isLoading: factoriesCategoriesLoading } = api.useGetFactoriesCategoriesQuery("");
+  const { data: clientsData, isLoading: clientsLoading } = api.useGetClientsQuery("");
+  const { data: paymentMethodsData, isLoading: paymentMethodsLoading } = api.useGetPaymentMethodsQuery("");
+  const { data: createOptionsData, isLoading: createOptionsLoading } = api.useGetPaymentCreateOptionsQuery("");
+  const { data: filterOptionsData, isLoading: filterOptionsLoading } = api.useGetPaymentFilterOptionsQuery("");
+  const { data: outlayTypesData, isLoading: outlayTypesLoading } = api.useGetOutlaysTypesQuery("");
+  const { data: floristData, isLoading: floristLoading } = api.useGetFloristsQuery("");
+  const { data: createdUserData, isLoading: createdUserLoading } = api.useGetHaveOrdersUsersQuery("");
+  const { data: salesTypesData, isLoading: salesTypesLoading } = api.useGetFactoriesSalesTypesQuery("");
+  const { data: outlayData, isLoading: outlayLoading } = api.useGetOutlaysQuery("");
+  const { data: salesmanData, isLoading: salesmanLoading } = api.useGetSalesmanQuery("");
+  const { data: workersData, isLoading: workersLoading } = api.useGetWorkersQuery("");
+  const { data: incomeTypesData, isLoading: incomeTypesLoading } = api.useGetWorkerIncomeTypesQuery("");
+  const { data: incomeReasons, isLoading: incomeReasonsLoading } = api.useGetIncomeReasonsQuery("");
+  const { data: workerTypes, isLoading: workerTypesLoading } = api.useGetAllWorkersReportTypeOptionsQuery("");
+  const { data: indicatorData, isLoading: indicatorLoading } = api.useGetIndicatorQuery(indicatorApiUrl);
+  const { data: statusesData, isLoading: statusesLoading } = api.useGetStatusesQuery(statusApiUrl);
+  const { data: createdData, isLoading: createdLoading } = api.useGetCreatedQuery(createdApiUrl);
 
   const extractValue = (selectedOption: any, returnType: "value" | "id") => {
     const getValueOrId = (option: any) => {
@@ -426,6 +410,19 @@ const FiltersBlock = ({
               />
             )}
           </>
+        )}
+
+        {hasProduct && (
+          <MultiSelect
+            isID
+            idOptions={productsData}
+            onChange={(e: any) =>
+              setProduct ? setProduct(extractValue(e, "id")) : null
+            }
+            placeholder="Товар"
+            isLoading={productsLoading}
+            defaultValues={product}
+          />
         )}
 
         {hasPercent && (

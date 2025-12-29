@@ -9,6 +9,7 @@ const useFilters = (initFilters: any) => {
   const [periodTo, setPeriodTo] = useState<Date>(initFilters['periodTo'])
   const [periodToTime, setPeriodToTime] = useState<any>(initFilters['periodToTime'])
   const [industry, setIndustry] = useState<string | null>('industry' in initFilters ? initFilters['industry'] : null)
+  const [products, setProducts] = useState<string | null>('products' in initFilters ? initFilters['products'] : null)
   const [productsCategory, setProductsCategory] = useState<string | null>('productsCategory' in initFilters ? initFilters['productsCategory'] : null)
   const [factoriesCategory, setFactoriesCategory] = useState<string | null>('factoriesCategory' in initFilters ? initFilters['factoriesCategory'] : null)
   const [client, setClient] = useState<string | null>('client' in initFilters ? initFilters['client'] : null)
@@ -41,7 +42,7 @@ const useFilters = (initFilters: any) => {
   const periodFromTimeFormatted = periodFromTime ? `${formatDate(periodFromTime).split(',')[0]}${fromTime ? ` ${fromTime}` : ' 00:00'}` : ''
   const periodToTimeFormatted = periodToTime ? `${formatDate(periodToTime).split(',')[0]}${toTime ? ` ${toTime}` : ' 23:59'}` : ''
 
-  return { periodFromTime, setPeriodFromTime, periodToTime, setPeriodToTime, periodFromTimeFormatted, periodToTimeFormatted, periodFrom, periodTo, setPeriodFrom, setPeriodTo, industry, setIndustry, productsCategory, setProductsCategory, factoriesCategory, setFactoriesCategory, periodFromFormatted, periodToFormatted, status, setStatus, client, setClient, paymentType, setPaymentType, paymentModelType, setPaymentModelType, paymentMethod, setPaymentMethod, outlayType, setOutlayType, florist, setFlorist, createdUser, setCreatedUser, salesType, setSalesType, hasDebt, setHasDebt, outlay, setOutlay, indicator, setIndicator, salesman, setSalesman, created, setCreated, provider, setProvider, worker, setWorker, fromTime, setFromTime, toTime, setToTime, incomeType, setIncomeType, incomeReason, setIncomeReason, isDebt, setIsDebt, workerType, setWorkerType, orderField, setOrderField, percentMin, setPercentMin, percentMax, setPercentMax }
+  return { periodFromTime, setPeriodFromTime, periodToTime, setPeriodToTime, periodFromTimeFormatted, periodToTimeFormatted, periodFrom, periodTo, setPeriodFrom, setPeriodTo, industry, setIndustry, productsCategory, setProductsCategory, factoriesCategory, setFactoriesCategory, periodFromFormatted, periodToFormatted, status, setStatus, client, setClient, paymentType, setPaymentType, paymentModelType, setPaymentModelType, paymentMethod, setPaymentMethod, outlayType, setOutlayType, florist, setFlorist, createdUser, setCreatedUser, salesType, setSalesType, hasDebt, setHasDebt, outlay, setOutlay, indicator, setIndicator, salesman, setSalesman, created, setCreated, provider, setProvider, worker, setWorker, fromTime, setFromTime, toTime, setToTime, incomeType, setIncomeType, incomeReason, setIncomeReason, isDebt, setIsDebt, workerType, setWorkerType, orderField, setOrderField, percentMin, setPercentMin, percentMax, setPercentMax, products, setProducts }
 }
 
 export default useFilters
