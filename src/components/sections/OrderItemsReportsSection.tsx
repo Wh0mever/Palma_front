@@ -46,6 +46,7 @@ const OrderItemsReportsSection = () => {
     'client': client !== null && client !== 'null' ? client : '',
     'salesman': salesman !== null && salesman !== 'null' ? salesman : '',
     'created_user': createdUser !== null && createdUser !== 'null' ? createdUser : '',
+    'product': products !== null && products !== 'null' ? products : '',
   }
 
   const productsQueryParams: any = {
